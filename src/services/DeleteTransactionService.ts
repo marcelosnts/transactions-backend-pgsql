@@ -10,7 +10,7 @@ class DeleteTransactionService {
     const transaction = await transactionRepository.findOne({ where: { id } });
 
     if (transaction) {
-      transactionRepository.delete(transaction?.id);
+      await transactionRepository.delete(transaction?.id);
 
       return 'Transaction deleted!';
     }

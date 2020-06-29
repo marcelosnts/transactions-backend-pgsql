@@ -1,6 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
 import Category from '../models/Category';
-import CreateCategoryService from '../services/CreateCategoryService';
 
 @EntityRepository(Category)
 export default class CategoryRepository extends Repository<Category> {
@@ -8,11 +7,11 @@ export default class CategoryRepository extends Repository<Category> {
     const category = await this.findOne({ where: { title } });
 
     if (!category) {
-      const createCategoryService = new CreateCategoryService();
+      const newCategory = this.create({ title });
 
-      const categoryCreated = await createCategoryService.execute(title);
+      const createdCategory = await this.save(newCategory);
 
-      return categoryCreated;
+      return createdCategory;
     }
 
     return category;
