@@ -35,20 +35,6 @@ class TransactionsRepository extends Repository<Transaction> {
 
     return { income, outcome, total };
   }
-
-  public async serializeTransactions(): Promise<Transaction[]> {
-    const transactions = await this.find({
-      relations: ['category'],
-    });
-
-    transactions.map(transaction => {
-      const serializeTransaction = transaction;
-      delete serializeTransaction.category_id;
-      return serializeTransaction;
-    });
-
-    return transactions;
-  }
 }
 
 export default TransactionsRepository;
