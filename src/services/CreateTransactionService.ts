@@ -17,7 +17,7 @@ class CreateTransactionService {
     value,
     type,
     category_id,
-  }: Request): Promise<Transaction> {
+  }: Request): Promise<Transaction | undefined> {
     const transactionRepository = getCustomRepository(TransactionRepository);
 
     const transaction = transactionRepository.create({
@@ -27,9 +27,13 @@ class CreateTransactionService {
       category_id,
     });
 
-    await transactionRepository.save(transaction);
+    const transactionCreated = await transactionRepository.save(transaction);
 
-    return transaction;
+    const newTransaction = await transactionRepository.findOne({
+      where: { id: transactionCreated.id },
+    });
+
+    return newTransaction;
   }
 }
 
